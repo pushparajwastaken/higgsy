@@ -3,6 +3,7 @@ import { prisma } from "./db";
 import { createAvatarSchema, createUserSchema } from "./types";
 import { uuid } from "uuidv4";
 import { createImage } from "./image";
+import { generateVideo } from "./video";
 const app = express();
 
 app.post("/api/v1/signup", async (req, res) => {
@@ -53,7 +54,14 @@ app.post("/api/v1/avatar", async (req, res) => {
   ]);
   //put in s3 then put in db
 });
-app.post("/api/v1/video", (req, res) => {});
+app.post("/api/v1/video", async (req, res) => {
+  const videoId = uuid();
+  await generateVideo(
+    "The video opens with a medium, eye-level shot of a beautiful woman with dark hair and warm brown eyes. She wears a magnificent, high-fashion flamingo dress with layers of pink and fuchsia feathers, complemented by whimsical pink, heart-shaped sunglasses. She walks with serene confidence through the crystal-clear, shallow turquoise water of a sun-drenched lagoon. The camera slowly pulls back to a medium-wide shot, revealing the breathtaking scene as the dress's long train glides and floats gracefully on the water's surface behind her. The cinematic, dreamlike atmosphere is enhanced by the vibrant colors of the dress against the serene, minimalist landscape, capturing a moment of pure elegance and high-fashion fantasy.",
+    [],
+    `./assets/video/${videoId}.mp4`,
+  );
+});
 app.get("/api/v1/video/:videoId", (req, res) => {});
 app.get("/api/v1/videos", (req, res) => {});
 app.get("/api/v1/models", (req, res) => {});
